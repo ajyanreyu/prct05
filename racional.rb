@@ -1,84 +1,74 @@
 # Implementar en este fichero la clase para crear objetos racionales
+=begin 
+**********************************************************
+*  Autor: Albano José Yanes Reyes
+*  Fecha: 18/10/2013
+*  Asignatura: Lenguejes y Paradigmas de Programación
+*  Tercero de Grado en Ingeniería Informática
+*  Universidad de la Laguna
+***********************************************************
+=end 
+
 #! /usr/bin/ruby
 require "./gcd.rb"
-
 class Fraccion
-	attr_reader :a , :b
-	
-	def initialize(a, b)
-		if(b == 0)
-			puts "ERROR: denominador no puede ser un 0"
-		else
-			@a, @b = a, b
-			mcd = gcd(a, b)
-			@a = a/mcd
-			@b = b/mcd
-		end
-	end
-	
-	def to_s
-		"#{@a} / #{@b}"
-	end
-	
-	def suma(n, d)
-		if(@b == d)
-			ns = @a + n
-			ds = @b
-		else
-			na = @a * d
-			nb = @b * d
-			nn = n * @b
-			nd = d * @b
-			ns = na + nn
-			ds = nd
-		end
-			mcd = gcd(ns, ds)
-			puts "El resultado de la suma es: #{ns/mcd} / #{ds/mcd}"
-	end
-	
-	def resta(n, d)
-		if(@b == d)
-			nr = @a - n
-			dr = @b
-		else
-			na = @a * d
-			nb = @b * d
-			nn = n * @b
-			nd = d * @b
-			nr = na - nn
-			dr = nd
-		end
-			mcd = gcd(nr, dr)
-			puts "El resultado de la resta es: #{nr/mcd} / #{dr/mcd}"
-	end
-	
-	def producto(n, d)
-		np = @a * n
-		dp = @b * d
-		
-		mcd = gcd(np, dp)
-		puts "El resultado del producto es: #{np/mcd} / #{dp/mcd}"		
-	end
-	
-	def division(n, d)
-		nd = @a * d
-		dd = @b * n
-		
-		mcd = gcd(nd, dd)
-		puts "El resultado de la division es: #{nd/mcd} / #{dd/mcd}"
-	end
-	
-end
-
-f1 = Fraccion.new(4, 2)
-puts f1
-
-f2 = f1.suma(4, 2)
-
-f3 = f1.resta(4, 2)
-
-f4 = f1.producto(4, 2)
-
-f5 = f1.division(4, 2)
-
+        attr_reader :a, :b
+        
+        def initialize(a, b)
+        	#comprobamos que los datos de entrada sean numeros
+                raise unless a.is_a?(Numeric)
+                raise unless b.is_a?(Numeric)
+                #chequea que el denominador  no sea cero
+                raise unless (b != 0)
+                
+                k = gcd(a, b)
+                a /= k
+                b /= k
+                @a, @b = a, b
+        end
+        # devuelve una cadena con la representación del racional
+        def to_s
+                "#{@a}/#{@b}"
+        end
+        # devuelve un nuevo racional que suma al objeto que invoca el que le pasan como parámetro
+        def suma (num)
+                maxcomun = @b * num.b
+                a1 = @a * num.b
+                a2 = num.a * @b
+                a3 = a1 + a2
+                k = gcd(a3, maxcomun)
+                a3 /= k
+                maxcomun /= k
+                Fraccion.new(a3, maxcomun)
+        end
+        # devuelve un nuevo racional que resta al objeto que invoca el que le pasan como parámetro
+        def resta (num)
+                maxcomun = @b * num.b
+                a1 = @a * num.b
+                a2 = num.a * @b
+                a3 = a1 - a2
+                k = gcd(a3, maxcomun)
+                a3 /= k
+                comun /= k
+                Fraccion.new(a3, maxcomun)
+        end
+        # devuelve un nuevo racional que multiplica al objeto que invoca el que le pasan como parámetro
+        def producto (num)
+                a = @a * num.a
+                b = @b * num.b
+                k = gcd(a, b)
+                a /= k
+                b /= k
+                Fraccion.new(a, b)
+        end
+        # devuelve un nuevo racional que multiplica al objeto que invoca el que le pasan como parámetro
+        def division (num)
+                a = @a * num.b
+                b = @b * num.a
+                k = gcd(a, b)
+                a /= k
+                b /= k
+                Fraccion.new(a, b)
+        end
+        
 end
